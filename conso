@@ -1,0 +1,11 @@
+function consolidateData()
+{
+  var headers = ["Date",	"Order ID", "Items",	"Status"];
+  var ws = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ws.getSheetByName("Conso_Data") ? ws.getSheetByName("Conso_Data") : ws.insertSheet("Conso_Data")
+  sheet.clear()
+  // get all sheets
+  var allsheets = ws.getSheets();
+  var data = [headers, ...allsheets.map((sheet, idx)=>  sheet.getDataRange().getValues().filter((_,inx)=> inx !== 0 ).reduce((a,c)=>[...a,c],[])).flat()]
+  data.forEach(row=> sheet.appendRow(row) )
+}
