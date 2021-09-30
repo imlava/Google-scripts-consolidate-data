@@ -1,6 +1,6 @@
 function consolidateData()
 {
-  var headers = ["Date",	"Order ID", "Items",	"Status"];
+  var headers = ["Date","Order ID","Items","Status"];
   var ws = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ws.getSheetByName("Conso_Data") ? ws.getSheetByName("Conso_Data") : ws.insertSheet("Conso_Data")
   sheet.clear()
