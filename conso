@@ -1,11 +1,33 @@
-function consolidateData()
-{
-  var headers = ["Date","Order ID","Items","Status"];
-  var ws = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ws.getSheetByName("Conso_Data") ? ws.getSheetByName("Conso_Data") : ws.insertSheet("Conso_Data")
-  sheet.clear()
-  // get all sheets
-  var allsheets = ws.getSheets();
-  var data = [headers, ...allsheets.map((sheet, idx)=>  sheet.getDataRange().getValues().filter((_,inx)=> inx !== 0 ).reduce((a,c)=>[...a,c],[])).flat()]
-  data.forEach(row=> sheet.appendRow(row) )
+function consolidateData() {
+  // Define the headers for the consolidated data
+  var headers = [
+    "Column1", "column2", "Column3", "Column4","Column5","Column6"
+  ];
+
+  // Access the active spreadsheet
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+  // Get the "Conso_Data" sheet or create it if it doesn't exist
+  var consoSheet = spreadsheet.getSheetByName("Conso_Data") || spreadsheet.insertSheet("Conso_Data");
+
+  // Clear any existing content in the "Conso_Data" sheet
+  consoSheet.clear();
+
+  // Get all sheets except the "Conso_Data" sheet
+  var allSheets = spreadsheet.getSheets().filter(sheet => sheet.getName() !== "Conso_Data");
+
+  // Initialize an array to hold the consolidated data, starting with headers
+  var data = [headers];
+
+  // Loop through each sheet and collect data
+  allSheets.forEach(sheet => {
+    var sheetData = sheet.getDataRange().getValues();
+    if (sheetData.length > 1) {
+      // Exclude the header row and add the data to the consolidated array
+      data = data.concat(sheetData.slice(1));
+    }
+  });
+
+  // Write the consolidated data to the "Conso_Data" sheet
+  consoSheet.getRange(1, 1, data.length, data[0].length).setValues(data);
 }
